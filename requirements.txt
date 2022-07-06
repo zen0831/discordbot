@@ -1,2 +1,4 @@
 discord.py[voice]>=1.7.3
 googletrans>=3.0.0
+discord_buttons_plugin>=0.1.2
+requests>=2.28.1
