@@ -18,14 +18,13 @@ async def on_command_error(ctx, error):
     error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
     result = tr.translate(error_msg, src="en", dest="ja").text
     await ctx.send(result)
-in 
 
 
-@bot.command()
+
 async def ping(ctx):
     await ctx.send('テストぉ')
 
-@bot.command()
+
 async def en(ctx):
     text = tr.translate(message.content, src="en", dest="ja").text
     await ctx.send(text)
