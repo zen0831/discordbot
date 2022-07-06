@@ -2,13 +2,15 @@ from discord.ext import commands
 from os import getenv
 import traceback
 from googletrans import Translator
-
+from discord_buttons_plugin import *
+import requests
 
 
 
 
 tr = Translator()
 bot = commands.Bot(command_prefix='/')
+buttons = ButtonsClient(bot)
 
 
 
@@ -24,16 +26,35 @@ async def on_command_error(ctx, error):
 async def ping(ctx):
     await ctx.send('テストぉ')
 
-@bot.command()
-async def en(ctx):
-    text = tr.translate(message.content, src="en", dest="ja").text
-    await ctx.send(text)
+@buttons.click
+  async def button_hello(ctx):
+    await ctx.reply("こんにちは！")
 
-@bot.command()
-async def text(ctx):
-    await ctx.send('**音楽botについて**')
-    await ctx.send('🟥基本コマンドの説明\n\n"m!join" -音楽botをVCに入れます\n"m!play" -リンクの動画再生\n"m!skip" -再生中の動画をスキップします\n"m!leave" -VCからbotを蹴ります\n"m!setup" -botの設定\n"m!loop" -音楽のループ再生\n\n\n🟥コマンドの使い方\n\n例)\nm!play https://youtu.be/xxxxxx')
+@buttons.click
+  async def button_ephemeral(ctx):
+    await ctx.reply("このメッセージはあなたにしか見えていません！", flags = MessageFlags().EPHEMERAL)
     
+@bot.command()
+  async def create(ctx):
+    await buttons.send(
+    		content = "テストボタン", 
+    		channel = ctx.channel.id,
+    		components = [
+    			ActionRow([
+    				Button(
+    					label="Hello", 
+    					style=ButtonType().Primary, 
+    					custom_id="button_hello"
+    				)
+    			]),ActionRow([
+    				Button(
+    					label="Ephemeral",
+    					style=ButtonType().Danger,
+    					custom_id="button_ephemeral"
+    				)
+    			])
+    		]
+    	)
 
 
 token = getenv('DISCORD_BOT_TOKEN')
