@@ -20,11 +20,11 @@ async def on_command_error(ctx, error):
     await ctx.send(result)
 
 
-
+@bot.command()
 async def ping(ctx):
     await ctx.send('テストぉ')
 
-
+@bot.command()
 async def en(ctx):
     text = tr.translate(message.content, src="en", dest="ja").text
     await ctx.send(text)
