@@ -1,4 +1,4 @@
 discord.py[voice]>=1.7.3
 googletrans
-discord_buttons_plugin
+discord-buttons-plugin
 requests
