@@ -7,7 +7,6 @@ import requests
 
 
 
-
 tr = Translator()
 bot = commands.Bot(command_prefix='/')
 buttons = ButtonsClient(bot)
