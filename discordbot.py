@@ -53,8 +53,8 @@ async def test6(ctx):
     j = ['グー',
          'チョキ',
          'パー'
-         ]
+         ]is 
     await ctx.send(random.choice(j))
 
 #トークン
-client.run('あなたのとーくん')
+client.run('DISCORD_BOT_TOKEN')
