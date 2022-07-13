@@ -1,60 +1,60 @@
+import discord
 from discord.ext import commands
-from os import getenv
-import traceback
-from googletrans import Translator
-from discord_buttons_plugin import *
-import requests
+import random
+
+#プレフィック
+client = commands.Bot(command_prefix = '!')
+
+#起動時のイベント
+@client.event
+async def on_ready():
+    print('ready')
+    CHANNEL_ID = 1234567890123
+    channel = client.get_channel(CHANNEL_ID)
+    await channel.send('ぱんつ')
+    #ステータス
+    await client.change_presence(activity=discord.Game(name='起動中'))
+
+#コード1(メッセージ)
+@client.command()
+async def test(ctx):
+    await ctx.send('うひょー')
+    #10秒後に消える
+    await ctx.send('ぱんつ',delete_after=10.0 )
 
 
+#コード2(画像)
+@client.command()
+async def test2(ctx):
+    #10秒後に消える
+    await ctx.send(file=discord.File('送りたい画像のパス'),delete_after=10.0 )
 
-tr = Translator()
-bot = commands.Bot(command_prefix='/')
-buttons = ButtonsClient(bot)
+#part3
+#コード4(ステータス2)
+@client.command()
+async def test3(ctx):
+    await client.change_presence(activity=discord.Game(name='2'))
 
+#コード5(ping)
+@client.command()
+async def test4(ctx):
+    await ctx.send('ping {0} ms'.format(round(client.latency)))
 
+#コード6(embed)
+@client.command()
+async def test5(ctx):
+    embed=discord.Embed(title='テスト', description='パンツ')
+    await ctx.send(embed=embed)
 
-@bot.event
-async def on_command_error(ctx, error):
-    orig_error = getattr(error, "original", error)
-    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-    result = tr.translate(error_msg, src="en", dest="ja").text
-    await ctx.send(result)
+#コード7(ランダムチョイス)
+#画像の場合await ctx.send(file=discord.File(f'{random.choice(j)}'))
+@client.command()
+async def test6(ctx):
+    j = ['グー',
+         'チョキ',
+         'パー'
+         ]
+    await ctx.send(random.choice(j))
 
-
-@bot.command()
-async def ping(ctx):
-    await ctx.send('テストぉ')
-
-@buttons.click
-  async def button_hello(ctx):
-    await ctx.reply("こんにちは！")
-
-@buttons.click
-  async def button_ephemeral(ctx):
-    await ctx.reply("このメッセージはあなたにしか見えていません！", flags = MessageFlags().EPHEMERAL)
-    
-@bot.command()
-  async def create(ctx):
-    await buttons.send(
-    		content = "テストボタン", 
-    		channel = ctx.channel.id,
-    		components = [
-    			ActionRow([
-    				Button(
-    					label="Hello", 
-    					style=ButtonType().Primary, 
-    					custom_id="button_hello"
-    				)
-    			]),ActionRow([
-    				Button(
-    					label="Ephemeral",
-    					style=ButtonType().Danger,
-    					custom_id="button_ephemeral"
-    				)
-    			])
-    		]
-    	)
-
-
-token = getenv('DISCORD_BOT_TOKEN')
-bot.run(token)
+#トークン
+client.run('あなたのとーくん')
